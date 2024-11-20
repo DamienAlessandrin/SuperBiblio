@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuperBiblio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+270fec0b00f68f8f8498516ff3158cfed63d9ebc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1121c53b959bae0c04b9ca022d618d8a9e86ce32")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuperBiblio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuperBiblio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

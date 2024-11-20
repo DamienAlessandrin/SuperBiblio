@@ -29,5 +29,14 @@ namespace SuperBiblio.Controller
                 return NotFound();
             return model;
         }
+
+        [HttpPost] // api/book
+        public async Task<ActionResult<BookModel>> Create(BookModel model)
+        {
+            var book = await repository.Create(model);
+            if (book == null)
+                return StatusCode(500);
+            return model;
+        }
     }
 }

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperBiblio", "SuperBiblio.csproj", "{A88FC5C3-32BD-492A-AD4B-0875CB901727}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperBiblio.Data", "..\SuperBiblio.Data\SuperBiblio.Data.csproj", "{B67CD753-B1E2-4401-84DB-B493EFAEDBEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperBiblio.Cmd", "..\SuperBiblio.Cmd\SuperBiblio.Cmd.csproj", "{95132149-F74B-4D77-B8B3-62691514906F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A88FC5C3-32BD-492A-AD4B-0875CB901727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88FC5C3-32BD-492A-AD4B-0875CB901727}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88FC5C3-32BD-492A-AD4B-0875CB901727}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88FC5C3-32BD-492A-AD4B-0875CB901727}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B67CD753-B1E2-4401-84DB-B493EFAEDBEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B67CD753-B1E2-4401-84DB-B493EFAEDBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B67CD753-B1E2-4401-84DB-B493EFAEDBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B67CD753-B1E2-4401-84DB-B493EFAEDBEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95132149-F74B-4D77-B8B3-62691514906F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95132149-F74B-4D77-B8B3-62691514906F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95132149-F74B-4D77-B8B3-62691514906F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95132149-F74B-4D77-B8B3-62691514906F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

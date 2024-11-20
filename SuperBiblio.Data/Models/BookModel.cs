@@ -5,6 +5,9 @@
         public int Id { get; set; }
         public string Title { get; set; } = "";
 
-        //TODO: Jonctions (Auteur, Membre, Rayon)
+        public int AuthorModelId { get; set; }
+        public AuthorModel Author { get; set; } = null!;
+
+        //TODO: Jonctions (Membre, Rayon)
     }
 }
