@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Repositories\Api\" />
-    <Folder Include="Repositories\Sql\" />
   </ItemGroup>
 
 </Project>

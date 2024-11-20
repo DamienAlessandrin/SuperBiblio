@@ -1,0 +1,13 @@
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\bin\Debug\net8.0\SuperBiblio.Data.deps.json
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\bin\Debug\net8.0\SuperBiblio.Data.dll
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\bin\Debug\net8.0\SuperBiblio.Data.pdb
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.csproj.AssemblyReference.cache
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.AssemblyInfoInputs.cache
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.AssemblyInfo.cs
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.csproj.CoreCompileInputs.cache
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.sourcelink.json
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.dll
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\refint\SuperBiblio.Data.dll
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\SuperBiblio.Data.pdb
+C:\Users\damie\source\repos\SuperBiblio\SuperBiblio.Data\obj\Debug\net8.0\ref\SuperBiblio.Data.dll
