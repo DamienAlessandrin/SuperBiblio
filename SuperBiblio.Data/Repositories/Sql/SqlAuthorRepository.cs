@@ -14,17 +14,20 @@ namespace SuperBiblio.Data.Repositories.Sql
 
         public async Task<AuthorModel?> Create(AuthorModel model)
         {
-            throw new NotImplementedException();
+            context.Set<AuthorModel>().Add(model);
+            await context.SaveChangesAsync();
+            return model;
         }
 
         public async Task<IEnumerable<AuthorModel>> Get()
         {
-            throw new NotImplementedException();
+            return await context.Author.ToListAsync();
         }
 
         public async Task<AuthorModel?> Get(int id)
         {
             return await context.Author.FirstOrDefaultAsync(x => x.Id == id);
         }
+
     }
 }

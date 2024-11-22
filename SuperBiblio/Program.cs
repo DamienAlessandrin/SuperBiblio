@@ -19,6 +19,7 @@ namespace SuperBiblio
             builder.Services.AddDbContext<DataContext>(options => options.UseSqlite("Data Source=data.db3"));
 
             builder.Services.AddScoped<IBookRepository, SqlBookRepository>();
+            builder.Services.AddScoped<IAuthorRepository, SqlAuthorRepository>();
 
             var app = builder.Build();
 

@@ -11,6 +11,7 @@ namespace SuperBiblio.Data
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
+            Database.EnsureDeleted(); // Supprime les données pour les renouveler en cas de changements //TODO: (A ENLEVER EN PROD!!!!)
             Database.EnsureCreated(); // Créer la BDD
         }
 
@@ -19,9 +20,9 @@ namespace SuperBiblio.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<BookModel>().HasData(
-                new BookModel() { Id = 1, Title = "1984" }, // Auteur : George Orwell
-                new BookModel() { Id = 2, Title = "L'Odyssée" }, // Auteur : Homère
-                new BookModel() { Id = 3, Title = "Le Rouge et le Noir" } // Auteur : Stendhal
+                new BookModel() { Id = 1, Title = "1984", AuthorModelId = 1 }, // Auteur : George Orwell
+                new BookModel() { Id = 2, Title = "L'Odyssée", AuthorModelId = 2 }, // Auteur : Homère
+                new BookModel() { Id = 3, Title = "Le Rouge et le Noir", AuthorModelId = 3 } // Auteur : Stendhal
                 );
 
             modelBuilder.Entity<AuthorModel>().HasData(
