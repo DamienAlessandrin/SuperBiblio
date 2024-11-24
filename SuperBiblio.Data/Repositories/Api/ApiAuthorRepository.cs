@@ -6,7 +6,7 @@ namespace SuperBiblio.Data.Repositories.Api
     public class ApiAuthorRepository : IAuthorRepository
     {
         private readonly string url;
-        private readonly HttpClient client; // Permet d'envoyer et de recevoir les requêtes HTTP
+        private readonly HttpClient client;
 
         public ApiAuthorRepository(string url)
         {

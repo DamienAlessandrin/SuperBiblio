@@ -23,6 +23,7 @@ namespace SuperBiblio.Data.Repositories.Sql
         {
             return await context.Book
                 .Include(x => x.Author)
+                .Include(x => x.Shelf)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -32,6 +33,7 @@ namespace SuperBiblio.Data.Repositories.Sql
             //return await context.Book.FirstOrDefaultAsync(x => x.Id == id); // author serrait vide
             return await context.Book
                 .Include(x => x.Author)
+                .Include(x => x.Shelf)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
