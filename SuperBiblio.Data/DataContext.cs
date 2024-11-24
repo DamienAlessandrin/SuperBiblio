@@ -11,7 +11,7 @@ namespace SuperBiblio.Data
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
-            Database.EnsureDeleted(); // Supprime les données pour les renouveler en cas de changements //TODO: (A ENLEVER EN PROD!!!!)
+            //Database.EnsureDeleted(); // Supprime les données pour les renouveler en cas de changements //TODO: (A ENLEVER EN PROD!!!!)
             Database.EnsureCreated(); // Créer la BDD
         }
 

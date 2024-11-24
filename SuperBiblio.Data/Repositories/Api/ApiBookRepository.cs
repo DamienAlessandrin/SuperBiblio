@@ -18,6 +18,7 @@ namespace EfCore.Data.Repositories
 
         public async Task<BookModel?> Create(BookModel model)
         {
+            //Console.WriteLine($"{model.Id} {model.Title} {model.AuthorModelId} {model.Author.Id} {model.Author.FirstName}");
             var response = await client.PostAsJsonAsync($"{url}book", model);
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<BookModel>();
