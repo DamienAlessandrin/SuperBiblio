@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuperBiblio.Cmd")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+09309143adbd9274d91de52ea23fcd777cea9d37")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0a81c4a7a2fbf7971e355cfe19521c2cee4f2f8f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuperBiblio.Cmd")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuperBiblio.Cmd")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

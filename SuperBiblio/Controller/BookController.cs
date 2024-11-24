@@ -24,10 +24,10 @@ namespace SuperBiblio.Controller
         [HttpGet("{id}")] // api/book/{id}
         public async Task<ActionResult<BookModel>> Get(int id)
         {
-            var model = await repository.Get(id);
-            if (model == null)
+            var book = await repository.Get(id);
+            if (book == null)
                 return NotFound();
-            return model;
+            return book;
         }
 
         [HttpPost] // api/book

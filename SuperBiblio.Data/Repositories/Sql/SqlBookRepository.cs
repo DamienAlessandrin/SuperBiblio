@@ -21,12 +21,19 @@ namespace SuperBiblio.Data.Repositories.Sql
 
         public async Task<IEnumerable<BookModel>> Get()
         {
-            return await context.Book.ToListAsync();
+            return await context.Book
+                .Include(x => x.Author)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<BookModel?> Get(int id)
         {
-            return await context.Book.FirstOrDefaultAsync(x => x.Id == id);
+            //return await context.Book.FirstOrDefaultAsync(x => x.Id == id); // author serrait vide
+            return await context.Book
+                .Include(x => x.Author)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
     }
 }
