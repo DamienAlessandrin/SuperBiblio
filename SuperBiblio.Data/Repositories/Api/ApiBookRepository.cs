@@ -7,7 +7,7 @@ namespace EfCore.Data.Repositories
     public class ApiBookRepository : IBookRepository
     {
         private readonly string url;
-        private readonly HttpClient client; // Permet d'envoyer et de recevoir les requêtes HTTP
+        private readonly HttpClient client;
 
         public ApiBookRepository(string url)
         {
