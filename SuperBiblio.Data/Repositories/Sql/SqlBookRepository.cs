@@ -37,5 +37,13 @@ namespace SuperBiblio.Data.Repositories.Sql
                 .AsNoTracking()
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
+
+        public async Task<IEnumerable<BookModel>> GetForAuthor(int authorId)
+        {
+            return await context.Book
+                .AsNoTracking()
+                .Where(x => x.AuthorModelId == authorId)
+                .ToListAsync();
+        }
     }
 }
