@@ -35,6 +35,7 @@ namespace SuperBiblio.Cmd
                 menu.Append("Liste des fonctionnalités :\n");
                 menu.Append("- 1 : Créer un livre et l'attribuer à un auteur.\n");
                 menu.Append("- 2 : Assigner un rayon à un livre.\n");
+                menu.Append("- 3 : Lister les livres par auteur.\n");
 
                 menu.Append("\n\nq : Quitter\n");
                 menu.Append("*********************************************************************************************************\n");
@@ -52,6 +53,7 @@ namespace SuperBiblio.Cmd
                         break;
 
                     case "3":
+                        functions.GetBooksByAuthor(bookRepository, authorRepository);
                         break;
 
                     case "q":
