@@ -142,6 +142,30 @@ namespace SuperBiblio.Cmd
             Console.WriteLine(message.ToString());
         }
 
+        public void GetBooksByAuthor(IBookRepository bookRepository, IAuthorRepository authorRepository)
+        {
+            do
+            {
+                int authorId = GetNumber("Id de l'auteur :");
+                var author = authorRepository.Get(authorId).Result ;
+                if (author == null)
+                {
+                    Console.WriteLine($"L'auteur {authorId} n'existe pas");
+                }
+                else
+                {
+                    var books = bookRepository.GetForAuthor(authorId).Result;
+                    StringBuilder message = new StringBuilder();
+                    foreach (var book in books)
+                        message.Append($"\"{book.Title}\" (Id:{book.Id})\n");
+
+                    Console.WriteLine(message.ToString());
+                    return;
+                }
+            }
+            while (true);
+        }
+
         public void GetAuthors(IAuthorRepository repository)
         {
             var authors = repository.Get().Result;
