@@ -9,5 +9,7 @@ namespace SuperBiblio.Data.Repositories
         Task<BookModel?> Get(int id);
 
         Task<BookModel?> Create(BookModel model);
+
+        Task<BookModel?> Update(int id, BookModel model);
     }
 }

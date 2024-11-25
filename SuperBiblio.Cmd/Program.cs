@@ -15,13 +15,14 @@ namespace SuperBiblio.Cmd
 
             IBookRepository bookRepository = new ApiBookRepository(URL);
             IAuthorRepository authorRepository = new ApiAuthorRepository(URL);
+            IShelfRepository shelfRepository = new ApiShelfRepository(URL);
 
-            Menu(bookRepository, authorRepository);
+            Menu(bookRepository, authorRepository, shelfRepository);
 
             Console.ReadLine();
         }
 
-        private static void Menu(IBookRepository bookRepository, IAuthorRepository authorRepository)
+        private static void Menu(IBookRepository bookRepository, IAuthorRepository authorRepository, IShelfRepository shelfRepository)
         {
             do
             {
@@ -34,7 +35,7 @@ namespace SuperBiblio.Cmd
                 menu.Append("*********************************************************************************************************\n");
                 menu.Append("Liste des fonctionnalités :\n");
                 menu.Append("- 1 : Créer un livre et l'attribuer à un auteur.\n");
-                menu.Append("- 2 : Assigner un rayon à un livre. (Bientôt disponible)\n");
+                menu.Append("- 2 : Assigner un rayon à un livre.\n");
 
                 menu.Append("\n\nq : Quitter\n");
                 menu.Append("*********************************************************************************************************\n");
@@ -49,6 +50,7 @@ namespace SuperBiblio.Cmd
                         break;
 
                     case "2":
+                        functions.AssignShelf(shelfRepository, bookRepository);
                         break;
 
                     case "3":

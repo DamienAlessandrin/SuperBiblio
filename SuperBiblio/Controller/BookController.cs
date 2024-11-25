@@ -38,5 +38,14 @@ namespace SuperBiblio.Controller
                 return StatusCode(500);
             return model;
         }
+
+        [HttpPut("{id}")] // api/book/{id}
+        public async Task<ActionResult<BookModel>> Update(int id, BookModel model)
+        {
+            var person = await repository.Update(id, model);
+            if (person == null)
+                return NotFound();
+            return model;
+        }
     }
 }
