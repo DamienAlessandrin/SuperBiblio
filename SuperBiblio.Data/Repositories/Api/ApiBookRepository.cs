@@ -40,14 +40,22 @@ namespace EfCore.Data.Repositories
                 return await reponse.Content.ReadFromJsonAsync<BookModel>();
             return null;
         }
-
-
+        
         public async Task<IEnumerable<BookModel>> GetForAuthor(int authorId)
         {
             var reponse = await client.GetAsync($"{url}book?authorId={authorId}");
             if (reponse.IsSuccessStatusCode)
                 return await reponse.Content.ReadFromJsonAsync<IEnumerable<BookModel>>();
+
             return null;
         }
+
+        public async Task<BookModel?> Update(int id, BookModel model)
+        {
+            var response = await client.PutAsJsonAsync($"{url}book/{id}", model);
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<BookModel>();
+        }
+                
     }
 }

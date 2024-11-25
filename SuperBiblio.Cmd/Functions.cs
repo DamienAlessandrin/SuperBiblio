@@ -16,15 +16,28 @@ namespace SuperBiblio.Cmd
         public void AssignShelf(IShelfRepository shelfRepository, IBookRepository bookRepository)
         {
             ShelfModel? shelf = SelectShelf(shelfRepository);
-            if (shelf != null)
+            if (shelf == null)
+            {
+                Console.WriteLine("Rayon introuvable.");
                 return;
+            }
 
             BookModel? book = SelectBook(bookRepository);
-            if (book != null)
+            if (book == null)
+            {
+                Console.WriteLine("Livre introuvable.");
                 return;
+            }
 
+            book.ShelfModelId = shelf.Id;
 
+            book = bookRepository.Update(book.Id, book).Result;
+            if (book == null)
+                Console.WriteLine("Livre introuvable.");
+            else
+                Console.WriteLine($"Le livre \"{book.Title}\" est maintenant dans le rayon {shelf.Name}\n");
 
+            return;
         }
 
         private static BookModel? SelectBook(IBookRepository repository)

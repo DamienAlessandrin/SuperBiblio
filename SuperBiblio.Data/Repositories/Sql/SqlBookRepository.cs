@@ -45,5 +45,16 @@ namespace SuperBiblio.Data.Repositories.Sql
                 .Where(x => x.AuthorModelId == authorId)
                 .ToListAsync();
         }
+        
+        public async Task<BookModel?> Update(int id, BookModel model)
+        {
+            var person = await context.Set<BookModel>().FirstOrDefaultAsync(x => x.Id == id);
+            if (person == null)
+                return null;
+
+            context.Entry(person).CurrentValues.SetValues(model);
+            await context.SaveChangesAsync();
+            return model;
+        }
     }
 }

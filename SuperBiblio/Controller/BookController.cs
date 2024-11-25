@@ -43,10 +43,13 @@ namespace SuperBiblio.Controller
             return model;
         }
 
-        //[HttpGet] // api/book?=authorId
-        //public async Task<IEnumerable<BookModel>> GetForAuthor([FromQuery] int authorId)
-        //{
-        //    return await repository.GetForAuthor(authorId);
-        //}
+        [HttpPut("{id}")] // api/book/{id}
+        public async Task<ActionResult<BookModel>> Update(int id, BookModel model)
+        {
+            var person = await repository.Update(id, model);
+            if (person == null)
+                return NotFound();
+            return model;
+        }
     }
 }

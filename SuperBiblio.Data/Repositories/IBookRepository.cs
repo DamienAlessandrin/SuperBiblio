@@ -8,8 +8,10 @@ namespace SuperBiblio.Data.Repositories
 
         Task<BookModel?> Get(int id);
 
-        Task<BookModel?> Create(BookModel model);
-
+        Task<BookModel?> Create(BookModel model);*
+          
         Task<IEnumerable<BookModel>> GetForAuthor(int authorId);
+
+        Task<BookModel?> Update(int id, BookModel model);
     }
 }
