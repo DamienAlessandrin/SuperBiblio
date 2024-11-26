@@ -28,15 +28,13 @@ namespace SuperBiblio.Cmd
             {
                 Functions functions = new Functions();
 
-                functions.GetBooks(bookRepository);
-                functions.GetAuthors(authorRepository);
-
                 StringBuilder menu = new StringBuilder();
                 menu.Append("*********************************************************************************************************\n");
                 menu.Append("Liste des fonctionnalités :\n");
                 menu.Append("- 1 : Créer un livre et l'attribuer à un auteur.\n");
                 menu.Append("- 2 : Assigner un rayon à un livre.\n");
                 menu.Append("- 3 : Lister les livres par auteur.\n");
+                menu.Append("- 4 : Lister les livres par rayon.\n");
 
                 menu.Append("\n\nq : Quitter\n");
                 menu.Append("*********************************************************************************************************\n");
@@ -55,7 +53,12 @@ namespace SuperBiblio.Cmd
                         break;
 
                     case "3":
+                        functions.GetAuthors(authorRepository);
                         functions.GetBooksByAuthor(bookRepository, authorRepository);
+                        break;
+
+                    case "4":
+                        functions.GetBooksByShelf(bookRepository, shelfRepository);
                         break;
 
                     case "q":

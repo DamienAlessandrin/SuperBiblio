@@ -45,7 +45,15 @@ namespace SuperBiblio.Data.Repositories.Sql
                 .Where(x => x.AuthorModelId == authorId)
                 .ToListAsync();
         }
-        
+
+        public async Task<IEnumerable<BookModel>> GetForShelf(int shelfId)
+        {
+            return await context.Book
+                .AsNoTracking()
+                .Where(x => x.ShelfModelId == shelfId)
+                .ToListAsync();
+        }
+
         public async Task<BookModel?> Update(int id, BookModel model)
         {
             var person = await context.Set<BookModel>().FirstOrDefaultAsync(x => x.Id == id);

@@ -40,10 +40,19 @@ namespace EfCore.Data.Repositories
                 return await reponse.Content.ReadFromJsonAsync<BookModel>();
             return null;
         }
-        
+
         public async Task<IEnumerable<BookModel>> GetForAuthor(int authorId)
         {
             var reponse = await client.GetAsync($"{url}book?authorId={authorId}");
+            if (reponse.IsSuccessStatusCode)
+                return await reponse.Content.ReadFromJsonAsync<IEnumerable<BookModel>>();
+
+            return null;
+        }
+
+        public async Task<IEnumerable<BookModel>> GetForShelf(int shelfId)
+        {
+            var reponse = await client.GetAsync($"{url}book?shelfId={shelfId}");
             if (reponse.IsSuccessStatusCode)
                 return await reponse.Content.ReadFromJsonAsync<IEnumerable<BookModel>>();
 
@@ -55,7 +64,9 @@ namespace EfCore.Data.Repositories
             var response = await client.PutAsJsonAsync($"{url}book/{id}", model);
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<BookModel>();
+
+            return null;
         }
-                
+
     }
 }

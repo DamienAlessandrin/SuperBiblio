@@ -6,16 +6,9 @@ namespace SuperBiblio.Cmd
 {
     internal class Functions
     {
-        //TODO: Fonction pour assigner un rayon à un livre
-        // FuncAssignShelf --> Select Shelf --> FuncSelectShelf --> Select shelf
-        //                                                      --> Select new shelf (last option) --> FuncCreatShelf --> Choose Name
-        //                 --> Select Book  --> FuncSelectBook  --> Select Book
-        //
-        // TODO: Créer une fonction qui retourne un menu de sélection si on lui donne une liste d'éléments (getAll) ou un repository (repository.getAll() dans le select)
-
         public void AssignShelf(IShelfRepository shelfRepository, IBookRepository bookRepository)
         {
-            ShelfModel? shelf = SelectShelf(shelfRepository);
+            ShelfModel? shelf = SelectShelf(shelfRepository, true);
             if (shelf == null)
             {
                 Console.WriteLine("Rayon introuvable.");
@@ -72,7 +65,7 @@ namespace SuperBiblio.Cmd
             } while (true);
         }
 
-        private static ShelfModel? SelectShelf(IShelfRepository repository)
+        private static ShelfModel? SelectShelf(IShelfRepository repository, bool NewPossible)
         {
             do
             {
@@ -88,7 +81,10 @@ namespace SuperBiblio.Cmd
                 message.Append("Liste des rayons :\n");
                 foreach (var shelf in shelves)
                     message.Append($"- {shelf.Id} : {shelf.Name} (Id:{shelf.Id})\n");
-                message.Append("n : Nouveau rayon\n");
+
+                if (NewPossible == true)
+                    message.Append("n : Nouveau rayon\n");
+
                 message.Append("\n\na : Annuler\n");
                 message.Append("*********************************************************************************************************\n");
                 message.Append("Option choisie : ");
@@ -98,7 +94,7 @@ namespace SuperBiblio.Cmd
                 if (int.TryParse(reponse, out int id))
                     return repository.Get(id).Result;
 
-                if (reponse == "n")
+                if (reponse == "n" && NewPossible == true)
                     return CreateShelf(repository);
 
                 if (reponse == "a")
@@ -147,7 +143,7 @@ namespace SuperBiblio.Cmd
             do
             {
                 int authorId = GetNumber("Id de l'auteur :");
-                var author = authorRepository.Get(authorId).Result ;
+                var author = authorRepository.Get(authorId).Result;
                 if (author == null)
                 {
                     Console.WriteLine($"L'auteur {authorId} n'existe pas");
@@ -155,6 +151,30 @@ namespace SuperBiblio.Cmd
                 else
                 {
                     var books = bookRepository.GetForAuthor(authorId).Result;
+                    StringBuilder message = new StringBuilder();
+                    foreach (var book in books)
+                        message.Append($"\"{book.Title}\" (Id:{book.Id})\n");
+
+                    Console.WriteLine(message.ToString());
+                    return;
+                }
+            }
+            while (true);
+        }
+
+        public void GetBooksByShelf(IBookRepository bookRepository, IShelfRepository shelfRepository)
+        {
+            do
+            {
+                ShelfModel? shelf = SelectShelf(shelfRepository, false);
+                if (shelf == null)
+                {
+                    Console.WriteLine("Rayon introuvable.");
+                    return;
+                }
+                else
+                {
+                    var books = bookRepository.GetForShelf(shelf.Id).Result;
                     StringBuilder message = new StringBuilder();
                     foreach (var book in books)
                         message.Append($"\"{book.Title}\" (Id:{book.Id})\n");

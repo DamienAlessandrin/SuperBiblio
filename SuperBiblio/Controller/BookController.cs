@@ -16,12 +16,18 @@ namespace SuperBiblio.Controller
         }
 
         [HttpGet] // api/book ou api/book?authorId=...
-        public async Task<IEnumerable<BookModel>> Get([FromQuery] int? authorId)
+        public async Task<IEnumerable<BookModel>> Get([FromQuery] int? authorId, int? shelfId)
         {
             if (authorId.HasValue)
             {
                 return await repository.GetForAuthor(authorId.Value);
             }
+
+            if (shelfId.HasValue)
+            {
+                return await repository.GetForShelf(shelfId.Value);
+            }
+
             return await repository.Get();
         }
 
