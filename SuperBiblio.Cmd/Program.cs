@@ -64,7 +64,14 @@ namespace SuperBiblio.Cmd
                     case "q":
                         System.Environment.Exit(0);
                         break;
+
+                    default:
+                        Console.WriteLine("Choix indisponible.");
+                        break;
                 }
+
+                Console.WriteLine("Appuyer sur une touche pour continuer ...");
+                Console.ReadLine();
             } while (true);
         }
     }
