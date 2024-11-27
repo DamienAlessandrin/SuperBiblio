@@ -21,6 +21,7 @@ namespace SuperBiblio
             builder.Services.AddScoped<IBookRepository, SqlBookRepository>();
             builder.Services.AddScoped<IAuthorRepository, SqlAuthorRepository>();
             builder.Services.AddScoped<IShelfRepository, SqlShelfRepository>();
+            builder.Services.AddScoped<IMemberRepository, SqlMemberRepository>();
 
             var app = builder.Build();
 

@@ -16,13 +16,14 @@ namespace SuperBiblio.Cmd
             IBookRepository bookRepository = new ApiBookRepository(URL);
             IAuthorRepository authorRepository = new ApiAuthorRepository(URL);
             IShelfRepository shelfRepository = new ApiShelfRepository(URL);
+            IMemberRepository memberRepository = new ApiMemberRepository(URL);
 
-            Menu(bookRepository, authorRepository, shelfRepository);
+            Menu(bookRepository, authorRepository, shelfRepository, memberRepository);
 
             Console.ReadLine();
         }
 
-        private static void Menu(IBookRepository bookRepository, IAuthorRepository authorRepository, IShelfRepository shelfRepository)
+        private static void Menu(IBookRepository bookRepository, IAuthorRepository authorRepository, IShelfRepository shelfRepository, IMemberRepository memberRepository)
         {
             do
             {
@@ -36,6 +37,7 @@ namespace SuperBiblio.Cmd
                 menu.Append("- 3 : Lister les livres par auteur.\n");
                 menu.Append("- 4 : Lister les livres par rayon.\n");
                 menu.Append("- 5 : Rechercher un livre par titre.\n");
+                menu.Append("- 6 : Emprunter un livre.\n");
 
                 menu.Append("\n\nq : Quitter\n");
                 menu.Append("*********************************************************************************************************\n");
@@ -64,6 +66,10 @@ namespace SuperBiblio.Cmd
 
                     case "5":
                         functions.GetBooksByTitle(bookRepository);
+                        break;
+
+                    case "6":
+                        functions.BorrowBook(memberRepository, bookRepository);
                         break;
 
                     case "q":

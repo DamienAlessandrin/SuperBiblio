@@ -11,6 +11,7 @@
         public int? ShelfModelId { get; set; }
         public ShelfModel? Shelf { get; set; } = null!;
 
-        //TODO: Jonctions (Membre)
+        public int? MemberModelId { get; set; }
+        public MemberModel? Member { get; set; } = null!;
     }
 }

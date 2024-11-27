@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SuperBiblio.Data.Models;
-using System.Text.RegularExpressions;
 
 namespace SuperBiblio.Data.Repositories.Sql
 {
@@ -25,6 +24,7 @@ namespace SuperBiblio.Data.Repositories.Sql
             return await context.Book
                 .Include(x => x.Author)
                 .Include(x => x.Shelf)
+                .Include(x => x.Member)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -34,6 +34,7 @@ namespace SuperBiblio.Data.Repositories.Sql
             return await context.Book
                 .Include(x => x.Author)
                 .Include(x => x.Shelf)
+                .Include(x => x.Member)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
@@ -43,6 +44,7 @@ namespace SuperBiblio.Data.Repositories.Sql
             return await context.Book
                 .Include(x => x.Author)
                 .Include(x => x.Shelf)
+                .Include(x => x.Member)
                 .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
                 .AsNoTracking()
                 .ToListAsync();

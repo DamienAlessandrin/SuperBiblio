@@ -6,7 +6,6 @@ namespace SuperBiblio.Cmd
 {
     internal class Functions
     {
-
         // Fonctionalités du menu :
         //      - Créer un livre
         public void CreateBook(IBookRepository bookRepository, IAuthorRepository authorRepository)
@@ -30,17 +29,11 @@ namespace SuperBiblio.Cmd
         {
             ShelfModel? shelf = SelectShelf(shelfRepository, true);
             if (shelf == null)
-            {
-                Console.WriteLine("Rayon introuvable.");
                 return;
-            }
 
             BookModel? book = SelectBook(bookRepository);
             if (book == null)
-            {
-                Console.WriteLine("Livre introuvable.");
                 return;
-            }
 
             book.ShelfModelId = shelf.Id;
 
@@ -85,10 +78,7 @@ namespace SuperBiblio.Cmd
             {
                 ShelfModel? shelf = SelectShelf(shelfRepository, false);
                 if (shelf == null)
-                {
-                    Console.WriteLine("Rayon introuvable.");
                     return;
-                }
                 else
                 {
                     var books = bookRepository.GetForShelf(shelf.Id).Result;
@@ -124,6 +114,39 @@ namespace SuperBiblio.Cmd
             Console.WriteLine(message.ToString());
         }
 
+        //      - Emprunter un livre
+        public void BorrowBook(IMemberRepository memberRepository, IBookRepository bookRepository)
+        {
+            BookModel? book = SelectBook(bookRepository);
+            if (book == null)
+                return;
+
+            if (book.Shelf != null)
+            {
+                book.ShelfModelId = null;
+
+                MemberModel? member = SelectMember(memberRepository);
+                if (member == null)
+                    return;
+
+                book.MemberModelId = member.Id;
+
+                book = bookRepository.Update(book.Id, book).Result;
+                if (book == null)
+                    Console.WriteLine("Livre introuvable.");
+                else
+                    Console.WriteLine($"Le livre \"{book.Title}\" est maintenant emprunté par {member.FirstName} {member.LastName}\n");
+            }
+            else
+            {
+                if (book.Member != null)
+                    Console.WriteLine("Ce livre est déjà emprunté.");
+                else
+                    Console.WriteLine("Le livre est introuvable. (ni dans un rayon, ni emprunté)");
+
+                return;
+            }
+        }
 
         // Fonctionnalité de sélection :
         //      - Sélectionner un livre
@@ -150,7 +173,11 @@ namespace SuperBiblio.Cmd
 
                 string reponse = Console.ReadLine();
                 if (int.TryParse(reponse, out int id))
-                    return repository.Get(id).Result;
+                {
+                    var book = repository.Get(id).Result;
+                    if (book != null)
+                        return book;
+                }
 
                 if (reponse == "a")
                     return null;
@@ -187,7 +214,11 @@ namespace SuperBiblio.Cmd
 
                 string reponse = Console.ReadLine();
                 if (int.TryParse(reponse, out int id))
-                    return repository.Get(id).Result;
+                {
+                    var shelf = repository.Get(id).Result;
+                    if (shelf != null)
+                        return shelf;
+                }
 
                 if (reponse == "n" && NewPossible == true)
                     return CreateShelf(repository);
@@ -224,10 +255,55 @@ namespace SuperBiblio.Cmd
 
                 string reponse = Console.ReadLine();
                 if (int.TryParse(reponse, out int id))
-                    return repository.Get(id).Result;
+                {
+                    var author = repository.Get(id).Result;
+                    if (author != null)
+                        return author;
+                }
 
                 if (reponse == "n")
                     return CreateAuthor(repository);
+
+                if (reponse == "a")
+                    return null;
+
+                Console.WriteLine("Choix indisponible.");
+            } while (true);
+        }
+
+        //      - Sélectionner un membre
+        private static MemberModel? SelectMember(IMemberRepository repository)
+        {
+            do
+            {
+                var members = repository.Get().Result;
+                if (members == null)
+                {
+                    Console.WriteLine("Erreur Api");
+                    return null;
+                }
+
+                StringBuilder message = new StringBuilder();
+                message.Append("*********************************************************************************************************\n");
+                message.Append("Liste des membres :\n");
+                foreach (var member in members)
+                    message.Append($"- {member.Id} : {member.FirstName} {member.LastName} (Id:{member.Id})\n");
+                message.Append("n : Nouveau membre\n");
+                message.Append("\n\na : Annuler\n");
+                message.Append("*********************************************************************************************************\n");
+                message.Append("Option choisie : ");
+                Console.Write(message.ToString());
+
+                string reponse = Console.ReadLine();
+                if (int.TryParse(reponse, out int id))
+                {
+                    var member = repository.Get(id).Result;
+                    if (member != null)
+                        return member;
+                }
+
+                if (reponse == "n")
+                    return CreateMember(repository);
 
                 if (reponse == "a")
                     return null;
@@ -273,6 +349,26 @@ namespace SuperBiblio.Cmd
             {
                 Console.WriteLine($"Nouvel auteur : {author.FirstName} {author.LastName} (Id:{author.Id})");
                 return author;
+            }
+        }
+
+        //      - Création d'un membre
+        private static MemberModel? CreateMember(IMemberRepository repository)
+        {
+            string firstName = GetTexte("Prénom du membre : ");
+            string lastName = GetTexte("Nom du membre : ");
+
+            var member = new MemberModel() { FirstName = firstName, LastName = lastName };
+            member = repository.Create(member).Result;
+            if (member == null)
+            {
+                Console.WriteLine("Création impossible(ou erreur durant la création)");
+                return null;
+            }
+            else
+            {
+                Console.WriteLine($"Nouveau membre : {member.FirstName} {member.LastName} (Id:{member.Id})");
+                return member;
             }
         }
 

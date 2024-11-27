@@ -24,17 +24,17 @@ namespace SuperBiblio.Controller
         [HttpGet("{id}")] // api/shelf/{id}
         public async Task<ActionResult<ShelfModel>> Get(int id)
         {
-            var author = await repository.Get(id);
-            if (author == null)
+            var shelf = await repository.Get(id);
+            if (shelf == null)
                 return NotFound();
-            return author;
+            return shelf;
         }
 
         [HttpPost] // api/shelf
         public async Task<ActionResult<ShelfModel>> Create(ShelfModel model)
         {
-            var author = await repository.Create(model);
-            if (author == null)
+            var shelf = await repository.Create(model);
+            if (shelf == null)
                 return StatusCode(500);
             return model;
         }

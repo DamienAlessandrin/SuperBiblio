@@ -7,8 +7,8 @@ namespace SuperBiblio.Data
     {
         public DbSet<BookModel> Book { get; set; }
         public DbSet<AuthorModel> Author { get; set; }
-
         public DbSet<ShelfModel> Shelf { get; set; }
+        public DbSet<MemberModel> Member { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
@@ -37,6 +37,12 @@ namespace SuperBiblio.Data
                 new ShelfModel() { Id = 1, Name = "Horreur" },
                 new ShelfModel() { Id = 2, Name = "Humour" },
                 new ShelfModel() { Id = 3, Name = "Policier" }
+                );
+
+            modelBuilder.Entity<MemberModel>().HasData(
+                new MemberModel() { Id = 1, FirstName = "Gerard", LastName = "Dupont" },
+                new MemberModel() { Id = 2, FirstName = "Patrick", LastName = "Delarue" },
+                new MemberModel() { Id = 3, FirstName = "Jean-Pierre", LastName = "Polnaref" }
                 );
         }
     }
