@@ -171,6 +171,34 @@ namespace SuperBiblio.Cmd
             Console.WriteLine($"Le livre {book.Title} emprunté par {member.FirstName} {member.LastName} a été rendu.");
         }
 
+        //      - Lister les livres empruntés
+
+        public void GetBorrowBooks(IBookRepository repository)
+        {
+            var books = repository.Get().Result;
+            if (books == null)
+            {
+                Console.WriteLine("Erreur Api");
+                return;
+            }
+
+            StringBuilder message = new StringBuilder();
+            message.Append("*********************************************************************************************************\n");
+            message.Append("Liste des livres empruntés\n");
+
+            foreach (var book in books)
+            {
+                if (book.MemberModelId != null)
+                {
+                    message.Append($"\t- \"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName}, emprunté par {book.Member.FirstName} {book.Member.LastName} (Id:{book.Id})\n");
+                }
+            }
+
+            message.Append("*********************************************************************************************************\n");
+
+            Console.WriteLine(message.ToString());
+        }
+
 
 
         // Fonctionnalité de sélection :

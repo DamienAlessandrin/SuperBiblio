@@ -39,6 +39,7 @@ namespace SuperBiblio.Cmd
                 menu.Append("- 5 : Rechercher un livre par titre.\n");
                 menu.Append("- 6 : Emprunter un livre.\n");
                 menu.Append("- 7 : Rendre un livre.\n");
+                menu.Append("- 8 : Lister tous les livres empruntés.\n");
 
                 menu.Append("\n\nq : Quitter\n");
                 menu.Append("*********************************************************************************************************\n");
@@ -75,6 +76,10 @@ namespace SuperBiblio.Cmd
 
                     case "7":
                         functions.ReturnBorrowBook(memberRepository, bookRepository);
+                        break;
+
+                    case "8":
+                        functions.GetBorrowBooks(bookRepository);
                         break;
 
                     case "q":
