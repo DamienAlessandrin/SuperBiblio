@@ -6,6 +6,26 @@ namespace SuperBiblio.Cmd
 {
     internal class Functions
     {
+
+        // Fonctionalités du menu :
+        //      - Créer un livre
+        public void CreateBook(IBookRepository bookRepository, IAuthorRepository authorRepository)
+        {
+            string titre = GetTexte("Titre du livre : ");
+
+            AuthorModel? author = SelectAuthor(authorRepository);
+            if (author == null)
+                return;
+
+            var book = new BookModel() { Title = titre, AuthorModelId = author.Id };
+            book = bookRepository.Create(book).Result;
+            if (book == null)
+                Console.WriteLine("Création impossible(ou erreur durant la création)\n");
+            else
+                Console.WriteLine($"Nouveau livre : {book.Title} écrit par {author.FirstName} {author.LastName} (Id:{book.Id})\n");
+        }
+
+        //      - Assigner un rayon à un livre
         public void AssignShelf(IShelfRepository shelfRepository, IBookRepository bookRepository)
         {
             ShelfModel? shelf = SelectShelf(shelfRepository, true);
@@ -33,6 +53,80 @@ namespace SuperBiblio.Cmd
             return;
         }
 
+        //      - Lister les livres par auteur
+        public void GetBooksByAuthor(IBookRepository bookRepository, IAuthorRepository authorRepository)
+        {
+            do
+            {
+                int authorId = GetNumber("Id de l'auteur :");
+                var author = authorRepository.Get(authorId).Result;
+                if (author == null)
+                {
+                    Console.WriteLine($"L'auteur {authorId} n'existe pas");
+                }
+                else
+                {
+                    var books = bookRepository.GetForAuthor(authorId).Result;
+                    StringBuilder message = new StringBuilder();
+                    foreach (var book in books)
+                        message.Append($"\"{book.Title}\" (Id:{book.Id})\n");
+
+                    Console.WriteLine(message.ToString());
+                    return;
+                }
+            }
+            while (true);
+        }
+
+        // Lister les livres par rayon
+        public void GetBooksByShelf(IBookRepository bookRepository, IShelfRepository shelfRepository)
+        {
+            do
+            {
+                ShelfModel? shelf = SelectShelf(shelfRepository, false);
+                if (shelf == null)
+                {
+                    Console.WriteLine("Rayon introuvable.");
+                    return;
+                }
+                else
+                {
+                    var books = bookRepository.GetForShelf(shelf.Id).Result;
+                    StringBuilder message = new StringBuilder();
+                    foreach (var book in books)
+                        message.Append($"\"{book.Title}\" (Id:{book.Id})\n");
+
+                    Console.WriteLine(message.ToString());
+                    return;
+                }
+            }
+            while (true);
+        }
+
+        //      - Rechercher des livres avec leur titre
+        public void GetBooksByTitle(IBookRepository bookRepository)
+        {
+            string title = GetTexte("Titre du livre : ");
+            var books = bookRepository.GetByTitle(title).Result;
+            if (books == null)
+            {
+                Console.WriteLine("Erreur Api");
+                return;
+            }
+
+            StringBuilder message = new StringBuilder();
+            foreach (var book in books)
+                if (book.Shelf != null)
+                    message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName}, rangé dans le rayon {book.Shelf.Name} (Id:{book.Id})\n");
+                else
+                    message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName} (Id:{book.Id})\n");
+
+            Console.WriteLine(message.ToString());
+        }
+
+
+        // Fonctionnalité de sélection :
+        //      - Sélectionner un livre
         private static BookModel? SelectBook(IBookRepository repository)
         {
             do
@@ -65,6 +159,7 @@ namespace SuperBiblio.Cmd
             } while (true);
         }
 
+        //      - Sélectionner un rayon
         private static ShelfModel? SelectShelf(IShelfRepository repository, bool NewPossible)
         {
             do
@@ -104,140 +199,7 @@ namespace SuperBiblio.Cmd
             } while (true);
         }
 
-        private static ShelfModel? CreateShelf(IShelfRepository repository)
-        {
-            string shelfName = GetTexte("Nom du rayon : ");
-
-            var shelf = new ShelfModel() { Name = shelfName };
-            shelf = repository.Create(shelf).Result;
-            if (shelf == null)
-            {
-                Console.WriteLine("Création impossible (ou erreur durant la création)");
-                return null;
-            }
-            else
-            {
-                Console.WriteLine($"Nouveau rayon : {shelf.Name} (Id:{shelf.Id})");
-                return shelf;
-            }
-        }
-
-        public void GetBooks(IBookRepository repository)
-        {
-            var books = repository.Get().Result;
-            if (books == null)
-            {
-                Console.WriteLine("Erreur Api");
-                return;
-            }
-
-            StringBuilder message = new StringBuilder();
-            foreach (var book in books)
-                message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName} (Id:{book.Id})\n");
-
-            Console.WriteLine(message.ToString());
-        }
-
-        public void GetBooksByAuthor(IBookRepository bookRepository, IAuthorRepository authorRepository)
-        {
-            do
-            {
-                int authorId = GetNumber("Id de l'auteur :");
-                var author = authorRepository.Get(authorId).Result;
-                if (author == null)
-                {
-                    Console.WriteLine($"L'auteur {authorId} n'existe pas");
-                }
-                else
-                {
-                    var books = bookRepository.GetForAuthor(authorId).Result;
-                    StringBuilder message = new StringBuilder();
-                    foreach (var book in books)
-                        message.Append($"\"{book.Title}\" (Id:{book.Id})\n");
-
-                    Console.WriteLine(message.ToString());
-                    return;
-                }
-            }
-            while (true);
-        }
-
-        public void GetBooksByShelf(IBookRepository bookRepository, IShelfRepository shelfRepository)
-        {
-            do
-            {
-                ShelfModel? shelf = SelectShelf(shelfRepository, false);
-                if (shelf == null)
-                {
-                    Console.WriteLine("Rayon introuvable.");
-                    return;
-                }
-                else
-                {
-                    var books = bookRepository.GetForShelf(shelf.Id).Result;
-                    StringBuilder message = new StringBuilder();
-                    foreach (var book in books)
-                        message.Append($"\"{book.Title}\" (Id:{book.Id})\n");
-
-                    Console.WriteLine(message.ToString());
-                    return;
-                }
-            }
-            while (true);
-        }
-
-        public void GetBooksByTitle(IBookRepository bookRepository)
-        {
-            string title = GetTexte("Titre du livre : ");
-            var books = bookRepository.GetByTitle(title).Result;
-            if (books == null)
-            {
-                Console.WriteLine("Erreur Api");
-                return;
-            }
-
-            StringBuilder message = new StringBuilder();
-            foreach (var book in books)
-                if (book.Shelf != null)
-                    message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName}, rangé dans le rayon {book.Shelf.Name} (Id:{book.Id})\n");
-                else
-                    message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName} (Id:{book.Id})\n");
-
-            Console.WriteLine(message.ToString());
-        }
-
-        public void GetAuthors(IAuthorRepository repository)
-        {
-            var authors = repository.Get().Result;
-            if (authors == null)
-            {
-                Console.WriteLine("Erreur Api");
-                return;
-            }
-
-            StringBuilder message = new StringBuilder();
-            foreach (var author in authors)
-                message.Append($"{author.FirstName} {author.LastName} (Id:{author.Id})\n");
-
-            Console.WriteLine(message.ToString());
-        }
-
-        public void CreateBook(IBookRepository bookRepository, IAuthorRepository authorRepository)
-        {
-            string titre = GetTexte("Titre du livre : ");
-
-            AuthorModel? author = SelectAuthor(authorRepository);
-            if (author == null)
-                return;
-
-            var book = new BookModel() { Title = titre, AuthorModelId = author.Id };
-            book = bookRepository.Create(book).Result;
-            if (book == null)
-                Console.WriteLine("Création impossible(ou erreur durant la création)\n");
-            else
-                Console.WriteLine($"Nouveau livre : {book.Title} écrit par {author.FirstName} {author.LastName} (Id:{book.Id})\n");
-        }
-
+        //      - Sélection d'un auteur
         private static AuthorModel? SelectAuthor(IAuthorRepository repository)
         {
             do
@@ -274,6 +236,27 @@ namespace SuperBiblio.Cmd
             } while (true);
         }
 
+        // Fonctionnalités de création (hormis le livre) :
+        //      - Création d'un rayon
+        private static ShelfModel? CreateShelf(IShelfRepository repository)
+        {
+            string shelfName = GetTexte("Nom du rayon : ");
+
+            var shelf = new ShelfModel() { Name = shelfName };
+            shelf = repository.Create(shelf).Result;
+            if (shelf == null)
+            {
+                Console.WriteLine("Création impossible (ou erreur durant la création)");
+                return null;
+            }
+            else
+            {
+                Console.WriteLine($"Nouveau rayon : {shelf.Name} (Id:{shelf.Id})");
+                return shelf;
+            }
+        }
+
+        //      - Création d'un auteur
         private static AuthorModel? CreateAuthor(IAuthorRepository repository)
         {
             string firstName = GetTexte("Prénom de l'auteur ou nom d'auteur : ");
@@ -293,6 +276,42 @@ namespace SuperBiblio.Cmd
             }
         }
 
+        // Fonctionnalités d'obtention :
+        //      - Obtenir la liste des livres
+        public void GetBooks(IBookRepository repository)
+        {
+            var books = repository.Get().Result;
+            if (books == null)
+            {
+                Console.WriteLine("Erreur Api");
+                return;
+            }
+
+            StringBuilder message = new StringBuilder();
+            foreach (var book in books)
+                message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName} (Id:{book.Id})\n");
+
+            Console.WriteLine(message.ToString());
+        }
+
+        //       - Obtenir la liste des auteurs
+        public void GetAuthors(IAuthorRepository repository)
+        {
+            var authors = repository.Get().Result;
+            if (authors == null)
+            {
+                Console.WriteLine("Erreur Api");
+                return;
+            }
+
+            StringBuilder message = new StringBuilder();
+            foreach (var author in authors)
+                message.Append($"{author.FirstName} {author.LastName} (Id:{author.Id})\n");
+
+            Console.WriteLine(message.ToString());
+        }
+
+        //      - Obtenir un nombre en envoyant un message
         private static int GetNumber(string message)
         {
             do
@@ -303,6 +322,7 @@ namespace SuperBiblio.Cmd
             } while (true);
         }
 
+        //      - Obtenir un texte en envoyant un message
         private static string GetTexte(string message)
         {
             do
