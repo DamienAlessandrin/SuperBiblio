@@ -67,6 +67,15 @@ namespace EfCore.Data.Repositories
             return null;
         }
 
+        public async Task<IEnumerable<BookModel>> GetForMember(int memberId)
+        {
+            var reponse = await client.GetAsync($"{url}book?memberId={memberId}");
+            if (reponse.IsSuccessStatusCode)
+                return await reponse.Content.ReadFromJsonAsync<IEnumerable<BookModel>>();
+
+            return null;
+        }
+
         public async Task<BookModel?> Update(int id, BookModel model)
         {
             var response = await client.PutAsJsonAsync($"{url}book/{id}", model);

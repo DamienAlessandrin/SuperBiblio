@@ -53,6 +53,9 @@ namespace SuperBiblio.Data.Repositories.Sql
         public async Task<IEnumerable<BookModel>> GetForAuthor(int authorId)
         {
             return await context.Book
+                .Include(x => x.Author)
+                .Include(x => x.Shelf)
+                .Include(x => x.Member)
                 .AsNoTracking()
                 .Where(x => x.AuthorModelId == authorId)
                 .ToListAsync();
@@ -61,8 +64,22 @@ namespace SuperBiblio.Data.Repositories.Sql
         public async Task<IEnumerable<BookModel>> GetForShelf(int shelfId)
         {
             return await context.Book
+                .Include(x => x.Author)
+                .Include(x => x.Shelf)
+                .Include(x => x.Member)
                 .AsNoTracking()
                 .Where(x => x.ShelfModelId == shelfId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<BookModel>> GetForMember(int memberId)
+        {
+            return await context.Book
+                .Include(x => x.Author)
+                .Include(x => x.Shelf)
+                .Include(x => x.Member)
+                .AsNoTracking()
+                .Where(x => x.MemberModelId == memberId)
                 .ToListAsync();
         }
 

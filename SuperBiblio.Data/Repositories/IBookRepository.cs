@@ -14,6 +14,8 @@ namespace SuperBiblio.Data.Repositories
 
         Task<IEnumerable<BookModel>> GetForShelf(int shelfId);
 
+        Task<IEnumerable<BookModel>> GetForMember(int memberId);
+
         Task<BookModel?> Update(int id, BookModel model);
 
         Task<IEnumerable<BookModel>> GetByTitle(string title);

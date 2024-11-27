@@ -16,7 +16,7 @@ namespace SuperBiblio.Controller
         }
 
         [HttpGet] // api/book ou api/book?authorId=...
-        public async Task<IEnumerable<BookModel>> Get([FromQuery] int? authorId, int? shelfId)
+        public async Task<IEnumerable<BookModel>> Get([FromQuery] int? authorId, int? shelfId, int? memberId)
         {
             if (authorId.HasValue)
             {
@@ -26,6 +26,11 @@ namespace SuperBiblio.Controller
             if (shelfId.HasValue)
             {
                 return await repository.GetForShelf(shelfId.Value);
+            }
+
+            if (memberId.HasValue)
+            {
+                return await repository.GetForMember(memberId.Value);
             }
 
             return await repository.Get();

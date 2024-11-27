@@ -125,7 +125,7 @@ namespace SuperBiblio.Cmd
             {
                 book.ShelfModelId = null;
 
-                MemberModel? member = SelectMember(memberRepository);
+                MemberModel? member = SelectMember(memberRepository, true);
                 if (member == null)
                     return;
 
@@ -147,6 +147,31 @@ namespace SuperBiblio.Cmd
                 return;
             }
         }
+
+        //      - Rendre un livre
+
+        public void ReturnBorrowBook(IMemberRepository memberRepository, IBookRepository bookRepository)
+        {
+            MemberModel? member = SelectMember(memberRepository, false);
+            if (member == null)
+                return;
+
+            var borrowBooks = bookRepository.GetForMember(member.Id).Result;
+
+            if (borrowBooks != null && !borrowBooks.Any())
+            {
+                Console.WriteLine("Ce membre n'a pas emprunté de livre");
+                return;
+            }
+            BookModel? book = SelectBorrowBookByMember(bookRepository, member);
+            if (book == null)
+                return;
+            book.MemberModelId = null;
+            bookRepository.Update(book.Id, book);
+            Console.WriteLine($"Le livre {book.Title} emprunté par {member.FirstName} {member.LastName} a été rendu.");
+        }
+
+
 
         // Fonctionnalité de sélection :
         //      - Sélectionner un livre
@@ -186,6 +211,44 @@ namespace SuperBiblio.Cmd
             } while (true);
         }
 
+
+        //      - Sélectionner un livre emprunté par un membre
+        private static BookModel? SelectBorrowBookByMember(IBookRepository repository, MemberModel member)
+        {
+            do
+            {
+                var books = repository.GetForMember(member.Id).Result;
+                if (books == null)
+                {
+                    Console.WriteLine("Erreur Api");
+                    return null;
+                }
+
+                StringBuilder message = new StringBuilder();
+                message.Append("*********************************************************************************************************\n");
+                message.Append($"Liste des livres empruntés par {member.FirstName} {member.LastName}:\n");
+                foreach (var book in books)
+                    message.Append($"- {book.Id} : \"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName} (Id:{book.Id})\n");
+                message.Append("\n\na : Annuler\n");
+                message.Append("*********************************************************************************************************\n");
+                message.Append("Option choisie : ");
+                Console.Write(message.ToString());
+
+                string reponse = Console.ReadLine();
+                if (int.TryParse(reponse, out int id))
+                {
+                    var book = repository.Get(id).Result;
+                    if (book != null && book.MemberModelId == member.Id)
+                        return book;
+                }
+
+                if (reponse == "a")
+                    return null;
+
+                Console.WriteLine("Choix indisponible.");
+            } while (true);
+        }
+
         //      - Sélectionner un rayon
         private static ShelfModel? SelectShelf(IShelfRepository repository, bool NewPossible)
         {
@@ -204,7 +267,7 @@ namespace SuperBiblio.Cmd
                 foreach (var shelf in shelves)
                     message.Append($"- {shelf.Id} : {shelf.Name} (Id:{shelf.Id})\n");
 
-                if (NewPossible == true)
+                if (NewPossible)
                     message.Append("n : Nouveau rayon\n");
 
                 message.Append("\n\na : Annuler\n");
@@ -220,7 +283,7 @@ namespace SuperBiblio.Cmd
                         return shelf;
                 }
 
-                if (reponse == "n" && NewPossible == true)
+                if (reponse == "n" && NewPossible)
                     return CreateShelf(repository);
 
                 if (reponse == "a")
@@ -272,7 +335,7 @@ namespace SuperBiblio.Cmd
         }
 
         //      - Sélectionner un membre
-        private static MemberModel? SelectMember(IMemberRepository repository)
+        private static MemberModel? SelectMember(IMemberRepository repository, bool NewPossible)
         {
             do
             {
@@ -288,7 +351,8 @@ namespace SuperBiblio.Cmd
                 message.Append("Liste des membres :\n");
                 foreach (var member in members)
                     message.Append($"- {member.Id} : {member.FirstName} {member.LastName} (Id:{member.Id})\n");
-                message.Append("n : Nouveau membre\n");
+                if (NewPossible)
+                    message.Append("n : Nouveau membre\n");
                 message.Append("\n\na : Annuler\n");
                 message.Append("*********************************************************************************************************\n");
                 message.Append("Option choisie : ");
@@ -302,7 +366,7 @@ namespace SuperBiblio.Cmd
                         return member;
                 }
 
-                if (reponse == "n")
+                if (reponse == "n" && NewPossible)
                     return CreateMember(repository);
 
                 if (reponse == "a")
