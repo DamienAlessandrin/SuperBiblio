@@ -41,6 +41,14 @@ namespace EfCore.Data.Repositories
             return null;
         }
 
+        public async Task<IEnumerable<BookModel>> GetByTitle(string title)
+        {
+            var reponse = await client.GetAsync($"{url}book/title/{title}");
+            if (reponse.IsSuccessStatusCode)
+                return await reponse.Content.ReadFromJsonAsync<IEnumerable<BookModel>>();
+            return null;
+        }
+
         public async Task<IEnumerable<BookModel>> GetForAuthor(int authorId)
         {
             var reponse = await client.GetAsync($"{url}book?authorId={authorId}");

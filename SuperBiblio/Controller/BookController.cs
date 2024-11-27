@@ -40,6 +40,13 @@ namespace SuperBiblio.Controller
             return book;
         }
 
+        [HttpGet("title/{title}")] // api/book/{title}
+
+        public async Task<IEnumerable<BookModel>> Get(string title)
+        {
+            return await repository.GetByTitle(title);
+        }
+
         [HttpPost] // api/book
         public async Task<ActionResult<BookModel>> Create(BookModel model)
         {

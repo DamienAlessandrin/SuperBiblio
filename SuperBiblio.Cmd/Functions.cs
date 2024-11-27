@@ -186,6 +186,26 @@ namespace SuperBiblio.Cmd
             while (true);
         }
 
+        public void GetBooksByTitle(IBookRepository bookRepository)
+        {
+            string title = GetTexte("Titre du livre : ");
+            var books = bookRepository.GetByTitle(title).Result;
+            if (books == null)
+            {
+                Console.WriteLine("Erreur Api");
+                return;
+            }
+
+            StringBuilder message = new StringBuilder();
+            foreach (var book in books)
+                if (book.Shelf != null)
+                    message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName}, rangé dans le rayon {book.Shelf.Name} (Id:{book.Id})\n");
+                else
+                    message.Append($"\"{book.Title}\" écrit par {book.Author.FirstName} {book.Author.LastName} (Id:{book.Id})\n");
+
+            Console.WriteLine(message.ToString());
+        }
+
         public void GetAuthors(IAuthorRepository repository)
         {
             var authors = repository.Get().Result;

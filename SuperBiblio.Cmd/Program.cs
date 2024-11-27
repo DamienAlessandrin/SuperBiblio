@@ -35,6 +35,7 @@ namespace SuperBiblio.Cmd
                 menu.Append("- 2 : Assigner un rayon à un livre.\n");
                 menu.Append("- 3 : Lister les livres par auteur.\n");
                 menu.Append("- 4 : Lister les livres par rayon.\n");
+                menu.Append("- 5 : Rechercher un livre par titre.\n");
 
                 menu.Append("\n\nq : Quitter\n");
                 menu.Append("*********************************************************************************************************\n");
@@ -59,6 +60,10 @@ namespace SuperBiblio.Cmd
 
                     case "4":
                         functions.GetBooksByShelf(bookRepository, shelfRepository);
+                        break;
+
+                    case "5":
+                        functions.GetBooksByTitle(bookRepository);
                         break;
 
                     case "q":
